@@ -6,15 +6,14 @@ import replace from 'rollup-plugin-replace';
 import svgr from '@svgr/rollup';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const outputFile =
-    NODE_ENV === 'production' ? './lib/components.prod.js' : './lib/components.dev.js';
+const outputFile = NODE_ENV === 'production' ? './lib/icons.prod.js' : './lib/icons.dev.js';
 
 export default {
-    input: './src/index.js',
+    input: './src/Icon/index.js',
     output: {
         file: outputFile,
         format: 'umd',
-        name: 'trevo-ui'
+        name: 'icons'
     },
     plugins: [
         svgr(),
