@@ -3,21 +3,18 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 
-import svgr from '@svgr/rollup';
-
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const outputFile =
     NODE_ENV === 'production' ? './lib/components.prod.js' : './lib/components.dev.js';
 
 export default {
-    input: './src/index.js',
+    input: './src/components/index.js',
     output: {
         file: outputFile,
         format: 'umd',
         name: 'trevo-ui'
     },
     plugins: [
-        svgr(),
         replace({
             'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
         }),
