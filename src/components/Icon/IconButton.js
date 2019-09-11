@@ -1,17 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import styled from 'styled-components';
 
-const DefaultIcon = styled.div`
+const Icon = styled.div`
     display: inline-block;
-    height: ${props => props.height + 'px'};
-    width: ${props => props.width + 'px'};
     padding: ${props => props.padding + 'px'};
-    border-radius: ${props => (props.rounded ? parseInt(props.padding) + 12 + 'px' : 0)};
+    border-radius: ${props =>
+        parseInt(props.padding) > 0 ? parseInt(props.padding) + 15 + 'px' : 0};
     background-color: ${props => props.background};
-
-    & svg {
-        fill: ${props => props.color};
-    }
+    height: ${props => props.height + 'px'};
 
     :hover {
         background-color: ${props => props.hoverBackground};
@@ -27,56 +25,42 @@ class IconButton extends React.Component {
         super(props);
 
         this.state = {
-            svgColor: props.color,
+            buttonHeight: 0,
             svgBackgroundColor: props.background
         };
-
-        this.setHover = this.setHover.bind(this);
-        this.removeHover = this.removeHover.bind(this);
     }
 
-    static defaultProps = {
-        background: '#333',
-        color: '#fff',
-        height: 45,
-        padding: 15,
-        width: 45
+    static propTypes = {
+        background: PropTypes.string,
+        padding: PropTypes.number
     };
 
-    setColors(svgColor, svgBackgroundColor) {
-        this.setState({
-            svgColor: svgColor,
-            svgBackgroundColor: svgBackgroundColor
+    static defaultProps = {
+        background: '#f5f5f5',
+        padding: 12
+    };
+
+    componentDidMount() {
+        React.Children.forEach(this.props.children, element => {
+            if (!React.isValidElement(element)) return;
+
+            this.setState({ buttonHeight: element.props.height });
         });
     }
 
-    setHover() {
-        if (!this.props.hover && !this.props.hoverBackground) return;
-        this.setColors(
-            this.props.hover,
-            this.props.hoverBackground ? this.props.hoverBackground : this.props.background
-        );
-    }
-
-    removeHover() {
-        if (!this.props.hover && !this.props.hoverBackground) return;
-        this.setColors(this.props.color, this.props.background);
-    }
-
     render() {
-        const { children, color, background, height, padding, width } = this.props;
+        const { children, background, hover, hoverBackground, padding } = this.props;
+        const { buttonHeight } = this.state;
 
         return (
-            <DefaultIcon
-                onMouseEnter={this.setHover}
-                onMouseLeave={this.removeHover}
-                color={color}
+            <Icon
                 background={background}
-                width={width}
-                height={height}
+                height={buttonHeight}
+                hover={hover}
+                hoverBackground={hoverBackground}
                 padding={padding}>
                 {children}
-            </DefaultIcon>
+            </Icon>
         );
     }
 }
