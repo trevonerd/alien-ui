@@ -9,7 +9,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const outputFile = NODE_ENV === 'production' ? './lib/icons.prod.js' : './lib/icons.dev.js';
 
 export default {
-    input: './src/Icon/index.js',
+    input: './src/icons/index.js',
     output: {
         file: outputFile,
         format: 'umd',
